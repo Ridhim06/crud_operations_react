@@ -22,12 +22,8 @@ console.log(address);
 console.log(apiData)
 
 const sendDataToAPI = () =>{
-    let emailstate= emailValidation()
-    let uniqueEmail=false
-    if(emailstate){
-        uniqueEmail=checkUniqueEmail()
-    }
-    if(uniqueEmail )
+    
+    if(validEmail=='')
     {
     axios.put(`https://62dbe8744438813a260d107c.mockapi.io/Crud/${ID}`,{
     name,
@@ -64,6 +60,7 @@ const checkUniqueEmail=()=>{
     setValidEmail("email id already present")
        return false
    }
+   setValidEmail('')
    return true
 }
 const emailValidation=()=>{
@@ -72,9 +69,18 @@ const emailValidation=()=>{
         setValidEmail("email in wrong format")
         return false
     }
+    setValidEmail('')
     return true
 }
 
+
+const checkvalidemail=()=>{
+    let emailstate= emailValidation()
+    let uniqueEmail=false
+    if(emailstate){
+        uniqueEmail=checkUniqueEmail()
+    }
+}
     return (
         <div>
             <Form>
@@ -89,7 +95,7 @@ const emailValidation=()=>{
                 <Form.Field>
                     <label>Email</label>
                     <input name='email' 
-                    onChange={(e)=>setEmail(e.target.value)} 
+                    onChange={(e)=>{checkvalidemail();setEmail(e.target.value)}} 
                     placeholder='Email' 
                     value={email}/>
                 </Form.Field>
