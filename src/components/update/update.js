@@ -32,6 +32,7 @@ const sendDataToAPI = () =>{
     occupation,
     address     
     }).then(()=>{
+        setValidEmail('')
         navigate('/read')
     })
     }
@@ -53,32 +54,38 @@ useEffect(()=>{
     })
 },[])
 
-const checkUniqueEmail=()=>{
+const checkUniqueEmail=(emailid)=>{
     console.log("apiData",apiData)
-   let filteredData= apiData && apiData.length>0 && apiData.filter(el=>el.email==email)
+   let filteredData= apiData && apiData.length>0 && apiData.filter(el=>el.email==emailid)
    if(filteredData.length>0){
     setValidEmail("email id already present")
        return false
    }
-   setValidEmail('')
+   else{
+       setValidEmail('')
+   }
+   
    return true
 }
-const emailValidation=()=>{
+const emailValidation=(emailid)=>{
     const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    if(email==''||regex.test(email)===false){
+    if(emailid==''||regex.test(emailid)===false){
         setValidEmail("email in wrong format")
         return false
     }
-    setValidEmail('')
+    else{
+        setValidEmail('')
+
+    }
     return true
 }
 
 
-const checkvalidemail=()=>{
-    let emailstate= emailValidation()
+const checkvalidemail=(email)=>{
+    let emailstate= emailValidation(email)
     let uniqueEmail=false
     if(emailstate){
-        uniqueEmail=checkUniqueEmail()
+        uniqueEmail=checkUniqueEmail(email)
     }
 }
     return (
@@ -95,7 +102,7 @@ const checkvalidemail=()=>{
                 <Form.Field>
                     <label>Email</label>
                     <input name='email' 
-                    onChange={(e)=>{checkvalidemail();setEmail(e.target.value)}} 
+                    onChange={(e)=>{checkvalidemail(e.target.value);setEmail(e.target.value)}} 
                     placeholder='Email' 
                     value={email}/>
                 </Form.Field>
